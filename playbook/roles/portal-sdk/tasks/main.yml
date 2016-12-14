@@ -4,14 +4,18 @@
 #       dest={{sdk_path}}
 #       version={{git_branch}}
 #       force=yes
+- name: Check dist folder exists
+  stat: path={{sdk_path}}/liferay-plugins-sdk-6.2/dist
+  register: df
 
 - name: Synchronize all the war files
   synchronize: src={{sdk_path}}/liferay-plugins-sdk-6.2/dist/ dest={{liferay_home}}/deploy/ checksum=yes
+  when: df.stat.isdir is defined and df.stat.isdir
 
-- name: Copy build.properties
-  template:
-    src=build.properties
-    dest={{sdk_path}}/liferay-plugins-sdk-6.2/build.properties
-    force=yes
-    owner=root group=root mode=644
+#- name: Copy build.properties
+#  template:
+#    src=build.properties
+#    dest={{sdk_path}}/liferay-plugins-sdk-6.2/build.properties
+#    force=yes
+#    owner=root group=root mode=644
 
