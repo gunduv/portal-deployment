@@ -7,6 +7,3 @@
         become: yes}
      - {role: portal-servers,
         become: yes}
-     - {role: update-patch,
-        become: yes}
-
