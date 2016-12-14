@@ -4,8 +4,6 @@ localhost ansible_connection=local
 [all:vars]
 user = vagrant
 sdk_path = /home/{{user}}/portalsdk
-git_url = http://git:igate%40123@54.148.164.255/git/portalsdk.git
-git_branch = development
 import_master_data = true
 
 backup_restore_archive_path=/home/{{user}}/backup_restore_archive
