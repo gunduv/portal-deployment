@@ -1,3 +1,0 @@
----
-- name: Import master data
-  mysql_db: login_user={{db_username}} login_password={{db_password}} state=import name={{db_name}} target={{ playbook_dir }}/files/update_tables.sql

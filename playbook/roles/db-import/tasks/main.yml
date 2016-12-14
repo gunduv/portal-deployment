@@ -1,7 +1,0 @@
----
-- name: wait for Liferay to start
-  wait_for: port=8080 delay=180
-
-- name: Import master data
-  mysql_db: login_user={{db_username}} login_password={{db_password}} state=import name={{db_name}} target={{ playbook_dir }}/files/master-tables-data.sql
-  when: "{{import_master_data}}==true"
