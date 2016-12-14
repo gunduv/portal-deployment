@@ -11,7 +11,7 @@ Deployment script combination of different roles
 
 
 Requirements:
-sdk_path = /home/{{user}}/portalsdk, path of the Liferay portal dist folder exists, inside dist all the war files requires for liferay application are placed.
+sdk_path = /home/{{user}}/portalsdk, path of the Liferay portal sdk, Inside portalsdk dist folder should contains all the war files required for liferay application.
 
 
 
