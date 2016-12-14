@@ -1,0 +1,17 @@
+---
+#- name: Pull source from Repository
+#  git: repo={{git_url}}
+#       dest={{sdk_path}}
+#       version={{git_branch}}
+#       force=yes
+
+- name: Synchronize all the war files
+  synchronize: src={{sdk_path}}/liferay-plugins-sdk-6.2/dist/ dest={{liferay_home}}/deploy/ checksum=yes
+
+- name: Copy build.properties
+  template:
+    src=build.properties
+    dest={{sdk_path}}/liferay-plugins-sdk-6.2/build.properties
+    force=yes
+    owner=root group=root mode=644
+

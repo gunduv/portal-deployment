@@ -1,13 +1,12 @@
 ---
  - hosts: all
    roles:
-     - {role: mysql-db-liferay-user,
-        become: yes}
-     - {role: liferay-portal,
+     - {role: portal-cleanup,
         become: yes}
      - {role: portal-sdk,
         become: yes}
-     - {role: elk-new,
+     - {role: portal-servers,
         become: yes}
-     - {role: reports-conf,
+     - {role: update-patch,
         become: yes}
+

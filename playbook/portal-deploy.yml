@@ -1,0 +1,9 @@
+---
+ - hosts: all
+   roles:
+     - {role: mysql-db-liferay-user,
+        become: yes}
+     - {role: liferay-portal,
+        become: yes}
+     - {role: portal-sdk,
+        become: yes}

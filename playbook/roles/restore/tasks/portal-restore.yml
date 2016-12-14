@@ -1,0 +1,20 @@
+---
+- name: Check Liferay server stopped
+  service: name=liferay state=stopped
+
+- name: Create mysql dump
+  mysql_db: login_user={{db_username}} login_password={{db_password}} name={{db_name}} state=import target={{ backup_restore_dir }}/kpi_portal.sql
+
+- name: Copy 'portal-ext.properties'
+  synchronize: src={{ backup_restore_dir }}/portal-ext.properties dest={{ liferay_home }}/portal-ext.properties
+
+- name: Remove data folder
+  file: path={{ liferay_home }}/data state=absent
+
+- name: Copy Liferay document data folder
+  synchronize: src={{backup_restore_dir}}/data dest={{ liferay_home }} owner=yes group=yes
+
+- name: Start Liferay server
+  service: name=liferay state=started
+
+

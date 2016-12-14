@@ -1,0 +1,6 @@
+---
+- name: Restart liferay
+  service:
+    name=liferay
+    state=started
+  become: yes

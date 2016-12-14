@@ -1,0 +1,9 @@
+---
+- name: Create Backup directory if not present
+  file: path="{{backup_restore_dir}}" state=absent
+
+- name: Create Backup directory if not present
+  file: path="{{backup_restore_dir}}" state=directory
+
+- include: portal-backup.yml
+- include: archive-backup.yml

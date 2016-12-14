@@ -1,0 +1,19 @@
+---
+- name: Delete temp directory
+  file: path="{{backup_restore_dir}}" state=absent
+
+- name: Create Backup directory if not present
+  file: path="{{backup_restore_dir}}" state=directory
+
+- name: Create Archive directory
+  stat: path="{{backup_restore_archive_path}}/{{restore_archive_file_name}}"
+  register: archive_file_out
+
+- name: fail
+  fail: 
+  when: not archive_file_out.stat.exists
+
+- name: Create KPI Portal backup Archive and copy to location
+  command: chdir={{backup_restore_dir}} tar -xvf {{backup_restore_archive_path}}/{{restore_archive_file_name}}
+
+- include: portal-restore.yml

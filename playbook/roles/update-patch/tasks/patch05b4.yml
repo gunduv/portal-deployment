@@ -1,0 +1,41 @@
+---
+- name: Make sure 'portal-ext.properties' are up to date
+  template: src=roles/liferay-portal/templates/portal-ext.properties dest={{ liferay_home }}
+
+- name: Import master data
+  mysql_db: login_user={{db_username}} login_password={{db_password}} state=import name={{db_name}} target={{ playbook_dir }}/files/update-master-tables-data.sql
+
+- name: Get list of logstash installed plugins
+  command: '/opt/logstash/bin/logstash-plugin list'
+  become: yes
+  register: installed
+
+- name: Install logstash golden config filter - custom filter
+  command: '/opt/logstash/bin/logstash-plugin install files/logstash-filter-goldenconfig-1.0.1.gem'
+  become: yes
+
+- name: Install logstash input mongodb filter - custom 
+  command: '/opt/logstash/bin/logstash-plugin install files/logstash-input-mongodb-0.3.5.gem'
+  become: yes
+
+- name: Get list of Elasticsearch installed plugins
+  command: '/usr/share/elasticsearch/bin/plugin list'
+  become: yes
+  register: installed
+
+- name: Install Elasticsearch delete-by-query plugin - with proxy
+  command: '/usr/share/elasticsearch/bin/plugin -DproxyPort={{proxy_port}} -DproxyHost={{proxy_host}} install delete-by-query'
+  become: yes
+  notify: Restart elasticsearch
+  when: '"    - delete-by-query" not in installed.stdout_lines and {{use_proxy}} == true'
+
+- name: Install Elasticsearch delete-by-query plugin -without proxy
+  command: '/usr/share/elasticsearch/bin/plugin install delete-by-query'
+  become: yes
+  notify: Restart elasticsearch
+  when: '"    - delete-by-query" not in installed.stdout_lines and {{use_proxy}} == false'
+
+- name: Restart Elasticsearch
+  service: name=elasticsearch state=restarted
+
+

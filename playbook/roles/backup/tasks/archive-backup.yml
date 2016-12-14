@@ -1,0 +1,6 @@
+---
+- name: Create Archive directory
+  file: path="{{backup_restore_archive_path}}" state=directory
+  
+- name: Create KPI Portal backup Archive and copy to location
+  command: chdir={{backup_restore_dir}} tar -cf {{backup_restore_archive_path}}/kpi_portal_backup{{ ansible_date_time.epoch }}.tar . 

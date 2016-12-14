@@ -1,0 +1,42 @@
+---
+
+## 
+## default varibales for liferay-db-mysql role
+##
+
+#
+# where to copy provisioning related artifacts
+#
+remote_provisioning_folder: "~/.provisioning"
+
+#
+# folder to keep custom MySQL configuration files 
+#
+mysql_custom_config_folder: "/etc/mysql/custom.conf.d"
+
+#
+# Custom MySQL configuration files.
+#
+mysql_custom_configs:
+ - {template: "bind-to-all.cnf.j2", filename: "bind-to-all.cnf"}
+
+#
+# A folder to copy SQL files to be imported if "import" is set 
+# for any databse in "mysql_databases" property 
+#
+mysql_import_files_path: "{{ remote_provisioning_folder }}/mysql_import"
+
+#
+# MySQL databases to be created.
+#
+mysql_databases:
+ - {name: "kpi_portal", encoding: "utf8", collation: "utf8_general_ci"}
+# - {name: "some_other_db", encoding: "utf8", collation: "utf8_general_ci" import="some_file.sql"}
+
+
+#
+# MySQL users to be created.
+#
+mysql_users:
+ - {name: "liferay", host: "%", password: "liferay", priv: "*.*:ALL"}
+# - {name: "other_user", host: "%", password: "secret", priv: "*.*:ALL"}

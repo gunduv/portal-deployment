@@ -1,0 +1,25 @@
+---
+- name: Stop Liferay if running
+  service: name=liferay state=stopped
+
+- name: Get the tomcat temp folder contents
+  command: ls {{tomcat_home}}/temp
+  register: dir_out
+
+- name: Remove contents tomcat temp folder
+  file: path={{tomcat_home}}/temp/{{item}} state=absent
+  with_items: dir_out.stdout_lines
+
+- name: Remove kpi-user-hook from tomcat webapp folder
+  file: path={{tomcat_home}}/webapps/kpi-user-hook state=absent
+
+- name: Get the tomcat work folder contents
+  command: ls {{tomcat_home}}/work
+  register: dir_out
+
+- name: Remove content from tomcat work folder
+  file: path={{tomcat_home}}/work/{{item}} state=absent
+  with_items: dir_out.stdout_lines
+
+- name: Replace web.xml.j2 in tomcat
+  template: src=web.xml.j2 dest={{ tomcat_home }}/conf/web.xml

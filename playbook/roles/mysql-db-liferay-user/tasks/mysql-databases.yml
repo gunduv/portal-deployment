@@ -1,0 +1,37 @@
+---
+
+- name: Create databases
+  become: yes
+  mysql_db:
+    name: "{{ item.name }}"
+    encoding: "{{ item.encoding }}"
+    collation: "{{ item.collation }}"
+    state: present
+  with_items: mysql_databases
+  register: mysql_created_databases
+
+- name: Make sure import files path exists
+  become: yes
+  file: 
+    path: "{{ mysql_import_files_path }}"
+    state: directory
+    mode: 0777
+
+- name: Copy database import files to remote host
+  become: yes
+  template: 
+    src: "{{ item.import }}"
+    dest: "{{ mysql_import_files_path }}/{{ item.import }}"
+  when: item.import is defined
+  with_items: mysql_databases  
+
+
+- name: populate Liferay DB
+  become: yes
+  mysql_db:
+    state: import 
+    name: "{{ item.item.name }}"
+    target: "{{ mysql_import_files_path }}/{{ item.item.import }}"
+  when: item.changed and item.item.import is defined
+  with_items: mysql_created_databases.results  
+

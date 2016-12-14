@@ -1,0 +1,37 @@
+---
+
+## In some distributions  (Ubuntu Vivid for example) mysql configuration 
+## is separated in multiple files:
+## /etc/mysql/conf.d/*
+## /etc/mysql/mysql.d/*
+## The files in this folders are loaded in alphabetical order and can modify the same settings.
+## This makes it really hard to make sure custom configuration will not be overwritten.
+## To work around the problem without having to provide full configuration, this task
+##  - creates another folder for custom configuration (specified in 'mysql_custom_config_folder' variable)
+##  - adds any custom configuration (specified in 'mysql_custom_configs') to that folder
+##  - reconfigures '/etc/mysql/my.cnf' to load the custom configs last (and thus overwrite the default settings)
+
+- name: Create folder for custom MySQL configurations
+  become: yes
+  file: 
+    path={{ mysql_custom_config_folder }}
+    state=directory
+    mode=0755
+
+- name: Update my.cnf to include custom configurations
+  become: yes
+  lineinfile: 
+    dest="/etc/mysql/my.cnf"
+    line="!includedir {{ mysql_custom_config_folder }}/"
+  notify: 
+   - restart mysql
+
+- name: Add custom MySQL configurations
+  become: yes
+  template: 
+    src="{{ item.template }}"
+    dest="{{ mysql_custom_config_folder }}/{{ item.filename }}"
+  with_items: mysql_custom_configs
+  when: mysql_custom_configs|length > 0
+  notify: 
+   - restart mysql

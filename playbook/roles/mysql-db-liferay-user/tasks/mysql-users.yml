@@ -1,0 +1,11 @@
+---
+
+- name: Make sure MySQL database users exists
+  become: yes
+  mysql_user:
+    name: "{{ item.name }}"
+    password: "{{ item.password }}" 
+    priv: "{{ item.priv }}"
+    host: "{{ item.host }}" 
+    state: present
+  with_items: mysql_users  

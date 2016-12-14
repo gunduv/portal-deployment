@@ -1,0 +1,12 @@
+---
+#- name: Check if liferays document folder exists
+#  stat: path={{ playbook_dir }}/files/data
+#  register: document_dir
+
+#- name: Copy Liferay document data folder
+#  synchronize: src={{ playbook_dir }}/files/data dest={{ liferay_home }} owner=yes group=yes
+#  when: document_dir.stat.isdir is defined and document_dir.stat.isdir
+
+- name: Check Liferay server started
+  service: name=liferay state=started
+

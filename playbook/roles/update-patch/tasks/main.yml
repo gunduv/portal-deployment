@@ -1,0 +1,11 @@
+- name: Install updates for 04a1
+  include: patch04a1.yml
+
+- name: Install updates for 05a1
+  include: patch05a1.yml
+
+- name: Install updates for 05b3
+  include: patch05b4.yml
+
+- name: Install updates for 05b5
+  include: patch05b5.yml

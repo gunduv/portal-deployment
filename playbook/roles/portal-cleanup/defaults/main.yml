@@ -1,0 +1,3 @@
+---
+liferay_home: /usr/local/liferay-portal-6.2-ce-ga6
+tomcat_home: "{{liferay_home}}/tomcat-7.0.62"

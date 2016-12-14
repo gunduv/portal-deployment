@@ -1,0 +1,20 @@
+---
+- name: Make sure the folder for Liferay's document library exists
+  become: yes
+  file: path={{ liferay_dl_folder }} state=directory mode=0777
+
+- name: Make sure 'portal-ext.properties' are up to date
+  become: yes
+  template: src=portal-ext.properties dest={{ liferay_home }}
+
+- name: Add setenv.sh to increase xxperm to 512m
+  become: yes
+  template: src=setenv.sh dest={{tomcat_home}}/bin/setenv.sh mode=0755
+  notify: Restart liferay
+
+- name: Replace web.xml in tomcat
+  become: yes
+  template: src=web.xml.j2 dest={{ tomcat_home }}/conf/web.xml
+  notify: Restart liferay
+
+

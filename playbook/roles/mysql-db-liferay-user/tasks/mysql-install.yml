@@ -1,0 +1,14 @@
+---
+
+- name: Install MySQL package
+  become: yes
+  apt: name={{ item }} state=installed #update_cache=yes
+  with_items:
+   - mysql-server
+   - python-mysqldb
+  when:
+   ansible_os_family == "Debian"
+
+- name: Make sure MySQL is started
+  become: yes
+  service: name=mysql state=started enabled=yes

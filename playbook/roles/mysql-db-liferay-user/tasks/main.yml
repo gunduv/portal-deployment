@@ -1,0 +1,7 @@
+---
+# tasks file for liferay-db-mysql
+
+- include: mysql-install.yml
+- include: mysql-configure.yml
+- include: mysql-databases.yml
+- include: mysql-users.yml

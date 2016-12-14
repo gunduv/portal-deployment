@@ -1,0 +1,8 @@
+---
+db_name: kpi_portal
+db_username: liferay
+db_password: liferay
+
+liferay_home: /usr/local/liferay-portal-6.2-ce-ga6
+
+backup_restore_dir: /tmp/kpi_restore
